@@ -1,61 +1,26 @@
-from django.http import *
-import random
-import sys
 import sys
 from io import StringIO
-from django.http import JsonResponse
+from django.http import HttpResponse
+import json
 
 simpleDict = {}
+j = '{"action": "print", "method": "onData", "data": "Madan Mohan"}'
+
+class Payload(object):
+    def __init__(self, j):
+        self.__dict__ = json.loads(j)
 
 
-l = """for i949afd99145346bf9d108edf25ae0710 in range(4):
-    print("asdasdasdsad",end="")
-
-for ib13aa23add38472c8e47e9c8d51d2a67 in range(4):
-    print("asda",end="")
-
-    if 2==3:
-        print("body",end="")
-    print("asdasdasdsgggad",end="")
-print("asdasd",end="")"""
-
-
-def dhb(request):
-    old_stdout = sys.stdout
-    redirected_output = sys.stdout = StringIO()
-    exec(request)
-    sys.stdout = old_stdout
-
-dhb(l)
-
-# code = """
-# i = [0,1,2]
-# for j in i :
-#     print(j)
-# print('hello')
-# """
-#
-# code2 = """
-# i = [0,1,2]\nfor j in i :\n    print(j)\nprint('hello')
-# """
-#
-# import sys
-# from io import StringIO
-#
-# old_stdout = sys.stdout
-# redirected_output = sys.stdout = StringIO()
-# exec(code2)
-# sys.stdout = old_stdout
-#
-# print(redirected_output.getvalue())
-def simpleFuction(request):
+def simpleFunction(request):
+    print(request)
     if request.method == 'GET':
         print(request.GET)
     elif request.method == 'POST':
         print(request.POST)
-        code =  request.POST['data']
-        str = functionForExec(code)
-    return JsonResponse({'foo': str})
+        code =  request.body
+        p = Payload(code)
+        #str = functionForExec(p.data)
+    return HttpResponse(p.data)
 
 def functionForExec(str):
     old_stdout = sys.stdout
