@@ -6,6 +6,7 @@ import json
 simpleDict = {}
 j = '{"action": "print", "method": "onData", "data": "Madan Mohan"}'
 
+
 class Payload(object):
     def __init__(self, j):
         self.__dict__ = json.loads(j)
@@ -17,7 +18,7 @@ def simpleFunction(request):
         print(request.GET)
     elif request.method == 'POST':
         print(request.POST)
-        code =  request.body
+        code = request.body
         p = Payload(code)
         #str = functionForExec(p.data)
     return HttpResponse(p.data)
