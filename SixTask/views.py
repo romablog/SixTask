@@ -19,7 +19,7 @@ def simpleFunction(request):
     elif request.method == 'POST':
         print(request.POST)
         code = request.body
-        p = Payload(code)
+        p = Payload(code.decode())
         #str = functionForExec(p.data)
     return HttpResponse(p.data)
 
