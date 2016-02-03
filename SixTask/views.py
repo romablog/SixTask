@@ -4,12 +4,14 @@ from django.http import HttpResponse, JsonResponse
 import json
 import random
 import string
+import iso8601
 
 simpleDict = {}
 
 j = '''
 for i949afd99145346bf9d108edf25ae0710 in range(4):
     print("asdasdasdsad",end="")
+    print(b)
 for ib13aa23add38472c8e47e9c8d51d2a67 in range(4):
     rint("asda",end="")
     if 2==3:
@@ -17,22 +19,42 @@ for ib13aa23add38472c8e47e9c8d51d2a67 in range(4):
     print("asdasdasdsgggad",end="")
 print("asdasd",end="")'''
 
+class Payload(object):
+    def __init__(self, j):
+        self.__dict__ = json.loads(j)
+
 
 def run(request):
-    text = json.load(request.body.decode())
-    code = simpleDict[text.id]
-    result = functionForExec(code)
-    return JsonResponse({result: result})
+    inf = json.loads(request.body.decode())
+    i, values = getData(inf)
+    code = simpleDict[i]
+    functionForExec(code)
+    result = test(*values)
+    return HttpResponse(inf['id']+result)
+
+
+def getData(data):
+    values = []
+    i = ''
+    for item in data:
+        if item == 'id':
+            i = item[item.keys[0]]
+        elif 'date' in item:
+            dtime = iso8601.parse_date(item['date'])
+            values.append(dtime)
+        else:
+            values.append(item[item.keys[0]])
+    return i, values
 
 
 def program(request):
-    code = json.load(request.body.decode())
+    data = json.loads(request.body.decode())['data']
     id = id_generator()
-    exception = execution(code.data)
+    exception = execution(data)
     if exception:
-        return JsonResponse({id: "", exception: exception})
-    simpleDict[id] = code.data
-    return JsonResponse({id: id, exception: ""})
+        return HttpResponse(exception)
+    simpleDict[id] = data
+    return HttpResponse(id)
 
 
 def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
