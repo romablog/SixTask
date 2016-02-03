@@ -14,7 +14,7 @@ def test(x, y, z):
     print(x,y,z)
     """
 exec (code3)
-test([1,2,3])
+test(*[1,2,3])
 
 import sys
 from io import StringIO
