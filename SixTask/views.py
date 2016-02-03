@@ -19,6 +19,7 @@ for ib13aa23add38472c8e47e9c8d51d2a67 in range(4):
     print("asdasdasdsgggad",end="")
 print("asdasd",end="")'''
 
+
 class Payload(object):
     def __init__(self, j):
         self.__dict__ = json.loads(j)
