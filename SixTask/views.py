@@ -7,21 +7,12 @@ simpleDict = {}
 j = '{"action": "print", "method": "onData", "data": "Madan Mohan"}'
 
 
-class Payload(object):
-    def __init__(self, j):
-        self.__dict__ = json.loads(j)
-
-
 def simpleFunction(request):
-    print(request)
-    if request.method == 'GET':
-        print(request.GET)
-    elif request.method == 'POST':
-        print(request.POST)
-        code = request.body
-        p = Payload(code.decode())
-        #str = functionForExec(p.data)
-    return HttpResponse(p.data)
+    print(request.POST)
+    code = json.load(request.body.decode())
+    result = functionForExec(code.data)
+    return HttpResponse(result.encode())
+
 
 def functionForExec(str):
     old_stdout = sys.stdout
