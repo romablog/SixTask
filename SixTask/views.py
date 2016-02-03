@@ -28,25 +28,25 @@ def run(request):
 def program(request):
     code = json.load(request.body.decode())
     id = id_generator()
+    exception = execution(code.data)
+    if exception:
+        return JsonResponse({id: "", exception: exception})
     simpleDict[id] = code.data
-    return JsonResponse({id: id})
+    return JsonResponse({id: id, exception: ""})
 
 
 def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def functionForExec(str):
+def functionForExec(str, data):
     old_stdout = sys.stdout
     redirected_output = sys.stdout = StringIO()
     ex = execution(str)
     sys.stdout = old_stdout
     if ex:
-        print(ex)
         return(ex)
-    print(redirected_output.getvalue())
     return (redirected_output.getvalue())
-
 
 def execution(str):
     exeption = ''
@@ -54,7 +54,4 @@ def execution(str):
         exec(str)
     except:
         exeption = sys.exc_info()
-    print(exeption)
     return exeption
-
-functionForExec(j)
