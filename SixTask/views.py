@@ -6,7 +6,16 @@ import random
 import string
 
 simpleDict = {}
-j = '{"action": "print", "method": "onData", "data": "Madan Mohan"}'
+
+j = '''
+for i949afd99145346bf9d108edf25ae0710 in range(4):
+    print("asdasdasdsad",end="")
+for ib13aa23add38472c8e47e9c8d51d2a67 in range(4):
+    rint("asda",end="")
+    if 2==3:
+        print(body, end="")
+    print("asdasdasdsgggad",end="")
+print("asdasd",end="")'''
 
 
 def run(request):
@@ -15,11 +24,13 @@ def run(request):
     result = functionForExec(code)
     return JsonResponse({result: result})
 
+
 def program(request):
     code = json.load(request.body.decode())
     id = id_generator()
-    simpleDict[id] = code
-    return JsonResponse({id: code})
+    simpleDict[id] = code.data
+    return JsonResponse({id: id})
+
 
 def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -28,6 +39,22 @@ def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
 def functionForExec(str):
     old_stdout = sys.stdout
     redirected_output = sys.stdout = StringIO()
-    exec(str)
+    ex = execution(str)
     sys.stdout = old_stdout
+    if ex:
+        print(ex)
+        return(ex)
+    print(redirected_output.getvalue())
     return (redirected_output.getvalue())
+
+
+def execution(str):
+    exeption = ''
+    try:
+        exec(str)
+    except:
+        exeption = sys.exc_info()
+    print(exeption)
+    return exeption
+
+functionForExec(j)
